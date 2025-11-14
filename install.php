@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * Installation
+ */
+
+// Datenbanktabelle mit rex_sql_table erstellen (moderne Methode)
+rex_sql_table::get(rex::getTable('uikit_banner_designs'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('name', 'varchar(191)', false, null, null, 'Banner Name'))
+    ->ensureColumn(new rex_sql_column('theme_name', 'varchar(191)', true, '', null, 'Theme Name aus uikit_theme_builder'))
+    ->ensureColumn(new rex_sql_column('height', 'varchar(50)', false, 'medium', null, 'small, medium, large, fullscreen'))
+    ->ensureColumn(new rex_sql_column('bg_type', 'varchar(50)', false, 'color', null, 'color, gradient, image, video, svg'))
+    ->ensureColumn(new rex_sql_column('bg_color', 'varchar(50)', true, '#f8f8f8'))
+    ->ensureColumn(new rex_sql_column('bg_gradient_start', 'varchar(50)', true, '#667eea'))
+    ->ensureColumn(new rex_sql_column('bg_gradient_end', 'varchar(50)', true, '#764ba2'))
+    ->ensureColumn(new rex_sql_column('bg_gradient_direction', 'varchar(50)', true, 'to bottom'))
+    ->ensureColumn(new rex_sql_column('bg_image', 'varchar(255)', true))
+    ->ensureColumn(new rex_sql_column('bg_image_repeat', 'tinyint(1)', false, '0'))
+    ->ensureColumn(new rex_sql_column('bg_image_position', 'varchar(50)', true, 'center center'))
+    ->ensureColumn(new rex_sql_column('bg_video', 'varchar(255)', true))
+    ->ensureColumn(new rex_sql_column('bg_svg', 'text', true))
+    ->ensureColumn(new rex_sql_column('border_top_color', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('border_top_width', 'int(11)', false, '0'))
+    ->ensureColumn(new rex_sql_column('border_bottom_color', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('border_bottom_width', 'int(11)', false, '0'))
+    ->ensureColumn(new rex_sql_column('border_left_color', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('border_left_width', 'int(11)', false, '0'))
+    ->ensureColumn(new rex_sql_column('border_right_color', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('border_right_width', 'int(11)', false, '0'))
+    ->ensureColumn(new rex_sql_column('overlay_type', 'varchar(50)', false, 'none', null, 'none, image, svg, icon'))
+    ->ensureColumn(new rex_sql_column('overlay_image', 'varchar(255)', true))
+    ->ensureColumn(new rex_sql_column('overlay_svg', 'text', true))
+    ->ensureColumn(new rex_sql_column('overlay_icon', 'varchar(100)', true))
+    ->ensureColumn(new rex_sql_column('overlay_position', 'varchar(50)', true, 'center center'))
+    ->ensureColumn(new rex_sql_column('overlay_size', 'int(11)', false, '50'))
+    ->ensureColumn(new rex_sql_column('overlay_min_width', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('overlay_min_height', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('overlay_padding', 'varchar(50)', true))
+    ->ensureColumn(new rex_sql_column('action_button_text', 'varchar(255)', true))
+    ->ensureColumn(new rex_sql_column('action_button_link', 'varchar(255)', true))
+    ->ensureColumn(new rex_sql_column('action_button_style', 'varchar(50)', true, 'primary'))
+    ->ensureColumn(new rex_sql_column('action_button_position', 'varchar(50)', true, 'bottom center'))
+    ->ensureColumn(new rex_sql_column('created_at', 'datetime'))
+    ->ensureColumn(new rex_sql_column('updated_at', 'datetime'))
+    ->ensureIndex(new rex_sql_index('name', ['name']))
+    ->ensureIndex(new rex_sql_index('theme_name', ['theme_name']))
+    ->ensure();
+
+echo 'UIKit Banner Design wurde erfolgreich installiert.';
+

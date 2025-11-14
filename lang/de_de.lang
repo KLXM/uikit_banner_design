@@ -1,0 +1,69 @@
+uikit_banner_design_title = UIKit Banner Design
+uikit_banner_design_overview = Übersicht
+uikit_banner_design_create = Neues Banner erstellen
+uikit_banner_design_edit = Banner bearbeiten
+uikit_banner_design_delete = Banner löschen
+uikit_banner_design_delete_confirm = Banner wirklich löschen?
+uikit_banner_design_name = Name
+uikit_banner_design_theme = UIKit Theme
+uikit_banner_design_actions = Aktionen
+uikit_banner_design_no_banners = Noch keine Banner erstellt
+
+# Tabs
+uikit_banner_design_tab_background = Hintergrund
+uikit_banner_design_tab_borders = Rahmen
+uikit_banner_design_tab_overlay = Overlay
+uikit_banner_design_tab_action = Action Button
+uikit_banner_design_tab_preview = Vorschau
+
+# Background
+uikit_banner_design_height = Höhe
+uikit_banner_design_height_small = Klein (300px)
+uikit_banner_design_height_medium = Mittel (500px)
+uikit_banner_design_height_large = Groß (700px)
+uikit_banner_design_height_fullscreen = Vollbild (100vh)
+uikit_banner_design_bg_type = Hintergrund-Typ
+uikit_banner_design_bg_type_color = Farbe
+uikit_banner_design_bg_type_gradient = Gradient
+uikit_banner_design_bg_type_image = Bild
+uikit_banner_design_bg_type_video = Video
+uikit_banner_design_bg_type_svg = SVG
+uikit_banner_design_bg_color = Hintergrundfarbe
+uikit_banner_design_bg_gradient_start = Gradient Start
+uikit_banner_design_bg_gradient_end = Gradient Ende
+uikit_banner_design_bg_gradient_direction = Gradient Richtung
+uikit_banner_design_bg_image = Hintergrundbild
+uikit_banner_design_bg_image_repeat = Gekachelt
+uikit_banner_design_bg_image_position = Bildposition
+uikit_banner_design_bg_video = Hintergrundvideo
+uikit_banner_design_bg_svg = SVG Code
+
+# Borders
+uikit_banner_design_border_top = Rahmen Oben
+uikit_banner_design_border_bottom = Rahmen Unten
+uikit_banner_design_border_left = Rahmen Links
+uikit_banner_design_border_right = Rahmen Rechts
+uikit_banner_design_border_color = Farbe
+uikit_banner_design_border_width = Breite (px)
+
+# Overlay
+uikit_banner_design_overlay_type = Overlay-Typ
+uikit_banner_design_overlay_type_none = Kein Overlay
+uikit_banner_design_overlay_type_image = Bild (PNG/SVG)
+uikit_banner_design_overlay_type_svg = SVG Code
+uikit_banner_design_overlay_type_icon = Icon
+uikit_banner_design_overlay_image = Overlay-Bild
+uikit_banner_design_overlay_svg = Overlay SVG Code
+uikit_banner_design_overlay_icon = Overlay Icon
+uikit_banner_design_overlay_position = Position
+uikit_banner_design_overlay_size = Größe (%)
+
+# Action Button
+uikit_banner_design_action_button_text = Button-Text
+uikit_banner_design_action_button_link = Button-Link
+uikit_banner_design_action_button_style = Button-Stil
+
+# Messages
+uikit_banner_design_saved = Banner wurde gespeichert
+uikit_banner_design_deleted = Banner wurde gelöscht
+uikit_banner_design_error = Fehler beim Speichern

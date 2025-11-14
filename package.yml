@@ -1,0 +1,31 @@
+package: uikit_banner_design
+version: '1.0.0-dev'
+author: KLXM
+supportpage: https://github.com/klxm/uikit_banner_design
+
+page:
+    title: 'UIKit Banner Design'
+    perm: uikit_banner_design[]
+    icon: rex-icon fa-image
+    subpages:
+        overview:
+            title: 'Übersicht'
+            icon: rex-icon fa-list
+        edit:
+            title: 'Banner bearbeiten'
+            icon: rex-icon fa-edit
+            hidden: true
+            hasLayout: true
+        preview:
+            title: 'Vorschau'
+            icon: rex-icon fa-eye
+            hidden: true
+            hasLayout: false
+        help: { title: 'translate:help', subPath: README.md, itemClass: 'pull-right' }
+
+requires:
+    redaxo: '^5.17'
+    php:
+        version: '^8.0'
+    packages:
+        uikit_theme_builder: '^1.0.0-beta1'
