@@ -75,6 +75,138 @@ $banner = UikitBannerRenderer::render(
 </div>
 ```
 
+### Template Manager Integration
+
+**Seit Template Manager 1.x** kann das Banner-Select-Feld über einen Extension Point verwendet werden.
+
+#### Schritt 1: Banner-Feld in Template Manager konfigurieren
+
+Im Template Manager unter **Einstellungen** folgende Zeile hinzufügen:
+
+```
+DOMAIN_SETTINGS
+
+tm_header_banner: banner_select|Header Banner|5|Banner für den Kopfbereich
+tm_footer_banner: banner_select|Footer Banner||Banner für den Fußbereich (optional)
+```
+
+**Syntax:**
+- `tm_header_banner` = Eindeutiger Key
+- `banner_select` = Feldtyp (registriert durch uikit_banner_design)
+- `Header Banner` = Label im Backend
+- `5` = Default Banner-ID (optional)
+- `Banner für...` = Hilfetext
+
+#### Schritt 2: Banner im Template ausgeben
+
+```php
+<?php
+// Banner-ID aus Template Manager holen
+$bannerId = TemplateManager::get('tm_header_banner');
+
+// Banner rendern wenn konfiguriert
+if (!empty($bannerId)) {
+    echo UikitBannerRenderer::render((int)$bannerId);
+}
+?>
+```
+
+**Mit eigenem Content:**
+
+```php
+<?php
+$bannerId = TemplateManager::get('tm_header_banner');
+
+if (!empty($bannerId)) {
+    $content = '
+    <div class="uk-container uk-container-small">
+        <h1 class="uk-heading-hero uk-text-center">
+            ' . rex_escape(rex_article::getCurrent()->getName()) . '
+        </h1>
+    </div>
+    ';
+    
+    echo UikitBannerRenderer::render((int)$bannerId, $content);
+}
+?>
+```
+
+**Conditional Banner:**
+
+```php
+<?php
+// Verschiedene Banner für verschiedene Kategorien
+$category = rex_category::getCurrent();
+$bannerId = null;
+
+if ($category && $category->getId() == 5) {
+    // News-Kategorie
+    $bannerId = TemplateManager::get('tm_news_banner');
+} else {
+    // Standard Header
+    $bannerId = TemplateManager::get('tm_header_banner');
+}
+
+if (!empty($bannerId)) {
+    echo UikitBannerRenderer::render((int)$bannerId);
+}
+?>
+```
+
+#### Backend-Vorschau
+
+Im Template Manager Backend erscheint das Banner-Select-Feld mit:
+- ✅ Dropdown-Liste aller verfügbaren Banner
+- ✅ "Banner Vorschau" Button (öffnet Vorschau in neuem Tab)
+- ✅ Live-Update der Vorschau bei Änderung
+
+#### Multi-Domain Support
+
+Mit YRewrite können unterschiedliche Banner pro Domain konfiguriert werden:
+
+```php
+<?php
+// Automatisch pro Domain/Sprache
+$bannerId = TemplateManager::get('tm_header_banner');
+
+// Oder manuell Domain-spezifisch
+$domain = rex_yrewrite::getCurrentDomain();
+if ($domain && $domain->getMount() == 1) {
+    $bannerId = TemplateManager::get('tm_header_banner'); // DE-Seite
+} else {
+    $bannerId = TemplateManager::get('tm_header_banner'); // EN-Seite
+}
+
+if (!empty($bannerId)) {
+    echo UikitBannerRenderer::render((int)$bannerId);
+}
+?>
+```
+
+### Template Manager Field Renderer Details
+
+Das `banner_select` Feld wird automatisch vom `uikit_banner_design` Addon registriert:
+
+**Datei:** `boot.php`
+```php
+// Extension Point Registration
+if (rex_addon::get('template_manager')->isAvailable()) {
+    rex_extension::register('TEMPLATE_MANAGER_FIELD_RENDERERS', function($ep) {
+        $renderers = $ep->getSubject();
+        $renderers[] = new \UikitBannerDesign\TemplateManagerFieldRenderer();
+        return $renderers;
+    });
+}
+```
+
+**Vorteile:**
+- ✅ Saubere Trennung (kein Code im Template Manager Core)
+- ✅ Automatische Integration wenn beide Addons installiert
+- ✅ Keine manuelle Konfiguration nötig
+- ✅ Update-sicher
+
+**Wichtig:** Ab Template Manager 2.0 wird das `banner_select` Feld **nur noch** über diesen Extension Point verfügbar sein. Die temporäre Integration im Template Manager Core wird entfernt.
+
 ## Hintergrund-Typen
 
 ### Farbe
