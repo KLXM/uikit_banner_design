@@ -42,6 +42,18 @@ class UikitBannerRenderer
         // Höhe direkt verwenden (unterstützt jetzt vh und px)
         $height = $banner['height'] ?: '50vh';
         
+        // Falls die Höhe ein Preset ist, in CSS-Wert umwandeln
+        $heightPresets = [
+            'small' => '30vh',
+            'medium' => '50vh',
+            'large' => '70vh',
+            'fullscreen' => '100vh'
+        ];
+        
+        if (isset($heightPresets[$height])) {
+            $height = $heightPresets[$height];
+        }
+        
         // Container Styles
         $styles = [
             'position: relative',
@@ -264,6 +276,56 @@ class UikitBannerRenderer
             case 'icon':
                 if ($banner['overlay_icon']) {
                     $html .= '<span uk-icon="icon: ' . rex_escape($banner['overlay_icon']) . '; ratio: 5"></span>';
+                }
+                break;
+                
+            case 'text':
+                // Text aus dem Textfeld oder von einem Artikel holen
+                $text = '';
+                if (!empty($banner['overlay_text'])) {
+                    $text = $banner['overlay_text'];
+                } elseif (!empty($banner['overlay_text_article_id'])) {
+                    $article = rex_article::get($banner['overlay_text_article_id']);
+                    if ($article) {
+                        $text = $article->getName();
+                    }
+                }
+                
+                if ($text) {
+                    $format = $banner['overlay_text_format'] ?? 'h2';
+                    $animation = $banner['overlay_text_animation'] ?? '';
+                    
+                    // Text-Ausrichtung basierend auf Position bestimmen
+                    $textAlign = 'center'; // Default
+                    $parts = explode(' ', $position);
+                    
+                    if (in_array('left', $parts)) {
+                        $textAlign = 'left';
+                    } elseif (in_array('right', $parts)) {
+                        $textAlign = 'right';
+                    }
+                    
+                    // Style mit text-align erweitern
+                    $textStyles = $contentStyleString . '; text-align: ' . $textAlign . '; margin: 0;';
+                    
+                    // Animation-Attribute hinzufügen
+                    $animationAttr = '';
+                    $animationClass = '';
+                    if (!empty($animation)) {
+                        // Verwende uk-scrollspy mit offset für sofortige Ausführung
+                        $animationAttr = ' uk-scrollspy="cls: uk-animation-' . rex_escape($animation) . '; offset-top: -100; repeat: false"';
+                        // Alternativ: direkte Animation ohne Scrollspy für Banner am Seitenanfang
+                        // $animationClass = ' uk-animation-' . rex_escape($animation);
+                    }
+                    
+                    // Prüfen ob es ein h1-h4 Tag oder eine UIKit-Klasse ist
+                    if (in_array($format, ['h1', 'h2', 'h3', 'h4'])) {
+                        // Standard HTML-Überschrift
+                        $html .= '<' . $format . ' style="' . $textStyles . '"' . $animationAttr . '>' . rex_escape($text) . '</' . $format . '>';
+                    } else {
+                        // UIKit-Überschriftenklasse
+                        $html .= '<h2 class="' . rex_escape($format) . '" style="' . $textStyles . '"' . $animationAttr . '>' . rex_escape($text) . '</h2>';
+                    }
                 }
                 break;
         }

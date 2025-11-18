@@ -101,6 +101,10 @@ if ($func === 'save') {
     $sql->setValue('overlay_image', rex_post('overlay_image', 'string'));
     $sql->setValue('overlay_svg', rex_post('overlay_svg', 'string'));
     $sql->setValue('overlay_icon', rex_post('overlay_icon', 'string'));
+    $sql->setValue('overlay_text', rex_post('overlay_text', 'string'));
+    $sql->setValue('overlay_text_article_id', rex_post('overlay_text_article_id', 'int'));
+    $sql->setValue('overlay_text_format', rex_post('overlay_text_format', 'string'));
+    $sql->setValue('overlay_text_animation', rex_post('overlay_text_animation', 'string'));
     $sql->setValue('overlay_position', rex_post('overlay_position', 'string'));
     $sql->setValue('overlay_size', rex_post('overlay_size', 'int', 50));
     $sql->setValue('overlay_min_width', rex_post('overlay_min_width', 'string'));
@@ -166,6 +170,10 @@ $banner = array_merge([
     'overlay_image' => '',
     'overlay_svg' => '',
     'overlay_icon' => '',
+    'overlay_text' => '',
+    'overlay_text_article_id' => 0,
+    'overlay_text_format' => 'h2',
+    'overlay_text_animation' => '',
     'overlay_position' => 'center center',
     'overlay_size' => 50,
     'action_button_text' => '',
@@ -601,7 +609,7 @@ else {
     $content .= '<div class="uk-margin">';
     $content .= '<label class="uk-form-label">Typ</label>';
     $content .= '<div class="uk-form-controls">';
-    $types = ['none' => 'Keins', 'image' => 'Bild', 'svg' => 'SVG', 'icon' => 'UIKit Icon'];
+    $types = ['none' => 'Keins', 'image' => 'Bild', 'svg' => 'SVG', 'icon' => 'UIKit Icon', 'text' => 'Text'];
     $content .= '<select name="overlay_type" id="overlay_type" class="uk-select">';
     foreach ($types as $value => $label) {
         $selected = ($banner['overlay_type'] === $value) ? ' selected' : '';
@@ -638,8 +646,79 @@ else {
     $content .= '</div>';
     $content .= '</div>';
     
+    // Overlay Text
+    $content .= '<div class="uk-margin overlay-field overlay-text" style="display:none;">';
+    $content .= '<label class="uk-form-label">Text oder Artikel</label>';
+    $content .= '<div class="uk-form-controls">';
+    $content .= '<textarea name="overlay_text" class="uk-textarea" rows="3" placeholder="Geben Sie hier Ihren Text ein...">' . htmlspecialchars($banner['overlay_text'] ?? '') . '</textarea>';
+    $content .= '<div class="uk-text-small uk-text-muted uk-margin-small-top">ODER wählen Sie einen Artikel, dessen Name als Text verwendet wird:</div>';
+    $content .= rex_var_link::getWidget(1, 'overlay_text_article_id', $banner['overlay_text_article_id'] ?? 0);
+    $content .= '</div>';
+    $content .= '</div>';
+
+    // Overlay Text Format
+    $content .= '<div class="uk-margin overlay-field overlay-text" style="display:none;">';
+    $content .= '<label class="uk-form-label">Textformat</label>';
+    $content .= '<div class="uk-form-controls">';
+    $formats = [
+        'h1' => 'Überschrift 1 (h1)',
+        'h2' => 'Überschrift 2 (h2)',
+        'h3' => 'Überschrift 3 (h3)',
+        'h4' => 'Überschrift 4 (h4)',
+        'uk-heading-small' => 'UIkit Small',
+        'uk-heading-medium' => 'UIkit Medium',
+        'uk-heading-large' => 'UIkit Large',
+        'uk-heading-xlarge' => 'UIkit X-Large',
+        'uk-heading-2xlarge' => 'UIkit 2X-Large',
+    ];
+    $content .= '<select name="overlay_text_format" class="uk-select">';
+    foreach ($formats as $value => $label) {
+        $selected = ($banner['overlay_text_format'] === $value) ? ' selected' : '';
+        $content .= '<option value="' . $value . '"' . $selected . '>' . $label . '</option>';
+    }
+    $content .= '</select>';
+    $content .= '</div>';
+    $content .= '</div>';
+
+    // Overlay Text Animation
+    $content .= '<div class="uk-margin overlay-field overlay-text" style="display:none;">';
+    $content .= '<label class="uk-form-label">Animation <span class="uk-text-muted">(optional)</span></label>';
+    $content .= '<div class="uk-form-controls">';
+    $animations = [
+        '' => 'Keine Animation',
+        'fade' => 'Fade (Einblenden)',
+        'scale-up' => 'Scale Up (Vergrößern)',
+        'scale-down' => 'Scale Down (Verkleinern)',
+        'slide-top' => 'Slide von oben',
+        'slide-bottom' => 'Slide von unten',
+        'slide-left' => 'Slide von links',
+        'slide-right' => 'Slide von rechts',
+        'slide-top-small' => 'Slide von oben (klein)',
+        'slide-bottom-small' => 'Slide von unten (klein)',
+        'slide-left-small' => 'Slide von links (klein)',
+        'slide-right-small' => 'Slide von rechts (klein)',
+        'slide-top-medium' => 'Slide von oben (mittel)',
+        'slide-bottom-medium' => 'Slide von unten (mittel)',
+        'slide-left-medium' => 'Slide von links (mittel)',
+        'slide-right-medium' => 'Slide von rechts (mittel)',
+        'kenburns' => 'Ken Burns (Zoom)',
+        'shake' => 'Shake (Schütteln)',
+        'stroke' => 'Stroke (Strich-Effekt)',
+    ];
+    $content .= '<select name="overlay_text_animation" class="uk-select">';
+    foreach ($animations as $value => $label) {
+        $selected = ($banner['overlay_text_animation'] === $value) ? ' selected' : '';
+        $content .= '<option value="' . $value . '"' . $selected . '>' . $label . '</option>';
+    }
+    $content .= '</select>';
+    $content .= '<div class="uk-text-small uk-text-muted uk-margin-small-top">';
+    $content .= '<span uk-icon="icon: info; ratio: 0.8"></span> UIKit Scroll-Animationen für den Text';
+    $content .= '</div>';
+    $content .= '</div>';
+    $content .= '</div>';
+    
     // Position & Größe (für alle Overlay-Typen außer none)
-    $content .= '<div class="overlay-field overlay-image overlay-svg overlay-icon" style="display:none;">';
+    $content .= '<div class="overlay-field overlay-image overlay-svg overlay-icon overlay-text" style="display:none;">';
     
     $content .= '<div class="uk-margin">';
     $content .= '<label class="uk-form-label">Position</label>';
@@ -840,6 +919,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelectorAll(".overlay-svg").forEach(el => el.style.display = "block");
             } else if (type === "icon") {
                 document.querySelectorAll(".overlay-icon").forEach(el => el.style.display = "block");
+            } else if (type === "text") {
+                document.querySelectorAll(".overlay-text").forEach(el => el.style.display = "block");
             }
         }
         

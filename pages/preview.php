@@ -37,7 +37,7 @@ if ($themeBuilderAvailable && !empty($banner['theme_name'])) {
     $themeDebug = "Theme geladen: {$banner['theme_name']}.css | URL: {$themeCss}";
 } else {
     // Fallback auf Standard UIKit
-    $themeCss = rex_url::assets('uikit/css/uikit.min.css');
+    $themeCss = rex_url::assets('addons/uikit_theme_builder/compiled_uikit/css/uikit.min.css');
     $themeDebug = "Fallback UIKit verwendet | URL: {$themeCss}";
 }
 
@@ -55,8 +55,8 @@ if ($themeBuilderAvailable && !empty($banner['theme_name'])) {
     <link rel="stylesheet" href="<?= $themeCss ?>">
     
     <!-- UIKit JS -->
-    <script src="<?= rex_url::assets('uikit/js/uikit.min.js') ?>"></script>
-    <script src="<?= rex_url::assets('uikit/js/uikit-icons.min.js') ?>"></script>    <style>
+    <script src="<?= rex_url::assets('addons/uikit_theme_builder/compiled_uikit/js/uikit.min.js') ?>"></script>
+    <script src="<?= rex_url::assets('addons/uikit_theme_builder/compiled_uikit/js/uikit-icons.min.js') ?>"></script>    <style>
         body {
             margin: 0;
             padding: 0;
